@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline Triage | Preethi Ravichandran</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f5f0;color:#172821;font:16px system-ui,sans-serif}header{background:#173a30;color:#fff;padding:36px max(5vw,20px)}header p{color:#d0e2d7;margin:0}h1{font-size:clamp(34px,6vw,64px);letter-spacing:-.05em;margin:8px 0}main{max-width:1150px;margin:auto;padding:30px 20px}section,aside{background:white;border:1px solid #dce3db;border-radius:16px;padding:20px}.stats,.layout{display:grid;gap:16px}.stats{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));margin:20px 0}.stats strong{font-size:30px;display:block}.layout{grid-template-columns:1fr 1fr}h2{margin:0 0 12px}button{font:inherit;cursor:pointer;border-radius:8px;padding:9px 14px;border:1px solid #aac0b4;background:#eef5ef;color:#173a30}button[aria-pressed=true],#review{background:#173a30;color:#fff}#queue{display:grid;gap:8px}#queue button{text-align:left;display:flex;justify-content:space-between;gap:8px}#queue span{font-size:.85em}li{margin-bottom:7px}#draft{white-space:pre-wrap;background:#f6f5f0;border-radius:8px;padding:12px}small{color:#4a6255}footer{margin-top:20px}@media(max-width:730px){.layout{grid-template-columns:1fr}}
+
+:root{color-scheme:dark}body{background:#10120f;color:#f2f4e9}header{background:linear-gradient(115deg,#1a2418,#283723);border-bottom:1px solid #5d704a}header h1{color:#d6fa83}header p,small{color:#b6c0b2}section,aside{background:#171b16;border-color:#343e30}button{background:#232b20;border-color:#52624b;color:#f2f4e9}button[aria-pressed=true],#review{background:#d6fa83;color:#18200f;border-color:#d6fa83}#draft{background:#202c1d}a:focus-visible,button:focus-visible{outline:2px solid #d6fa83;outline-offset:4px}.back{color:#d6fa83}
+
+body{background:#211742;color:#fff6ef}
+header{background:linear-gradient(115deg,#211742,#412882);border-bottom-color:#aa91ff}
+header h1,.back{color:#c7ef66}
+header p,small{color:#e8def5}
+section,aside{background:#302451;border-color:#77649d}
+button{background:#392a5b;border-color:#a391c0;color:#fff6ef}
+button[aria-pressed=true],#review{background:#c7ef66;color:#211742;border-color:#c7ef66}
+#draft{background:#392a5b}
+a:focus-visible,button:focus-visible{outline-color:#c7ef66}
+</style>
+<header><p>PREETHI RAVICHANDRAN · GTM PORTFOLIO</p><h1>Pipeline Triage</h1><p>Find the open deals that need a decision before the forecast review.</p></header>
+<main>
+<p><a href="index.html" class="back">← Back to portfolio</a></p>
+<small>Interactive demo · Fictional CRM data</small>
+<div class="stats" id="stats"></div>
+<div class="layout">
+<section><h2>Opportunity queue</h2><p id="queue-description">Flagged deals appear first, ordered by number of signals.</p><div id="queue" aria-describedby="queue-description"></div></section>
+<aside id="detail" aria-live="polite"></aside>
+</div>
+<footer><p><a class="back" href="pipeline-triage.js">View Pipeline Triage source</a></p><small>Rules flag an overdue close date, 21+ days without recorded activity or missing activity history, and missing or zero deal value. The demo uses a fixed reference date so the same records produce the same results. Drafts are generated from templates. Reviews stay in this browser session.</small></footer>
+</main>
+<script src="pipeline-triage.js"></script>
+</html>

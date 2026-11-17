@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM write-back and retry | Preethi Ravichandran</title>
+<link rel="stylesheet" href="portfolio.css">
+<script src="sync-review.js" defer></script>
+</head>
+<body>
+<header class="wrap nav"><a href="index.html" class="brand">Preethi Ravichandran</a><a href="index.html#projects-title">Back to projects</a></header>
+<main class="wrap replay">
+<p class="label">INTERACTIVE WORK SAMPLE · FICTIONAL CRM</p>
+<h1>CRM write-back and retry</h1>
+<p class="intro">When a provider sends an update twice or Salesforce is briefly unavailable, the workflow should leave a clear record of what happened. This browser simulation uses fictional events and runs without a CRM connection.</p>
+<section class="panel" aria-labelledby="replay-title">
+<h2 id="replay-title">Integration replay</h2>
+<p>Run the sample batch, retry the failed record, then replay the batch to check for duplicate writes.</p>
+<div class="replay-controls"><button id="batch-run">Run or replay batch</button><button id="retry" disabled>Retry failed record</button><button id="reset">Reset</button></div>
+<p id="counts" role="status"></p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Event</th><th scope="col">Decision</th><th scope="col">Reason</th></tr></thead><tbody id="log"></tbody></table></div>
+</section>
+<h3>Controls this demonstrates</h3>
+<p>Apply an allowlist for enrichment fields, use event IDs to avoid a second successful write, and keep failed events eligible for a retry. A production version would persist event IDs and audit records, use a durable queue, and apply CRM-side idempotency to handle a write that succeeds before acknowledgment.</p>
+<p>The replay tracks successful event IDs and retryable failures in memory for this session.</p>
+<a href="sync-review.js">View CRM replay source</a>
+</main>
+</body>
+</html>
