@@ -12,7 +12,7 @@
 <main class="wrap replay">
 <p class="label">INTERACTIVE WORK SAMPLE · FICTIONAL CRM</p>
 <h1>CRM write-back and retry</h1>
-<p class="intro">When a provider sends an update twice or Salesforce is briefly unavailable, the workflow should leave a clear record of what happened. This browser simulation uses sample events and runs without a CRM connection.</p>
+<p class="intro">When a provider sends an update twice or Salesforce is briefly unavailable, the workflow should leave a clear record of what happened. This browser simulation uses fictional events and runs without a CRM connection.</p>
 <section class="panel" aria-labelledby="replay-title">
 <h2 id="replay-title">Integration replay</h2>
 <p>Run the sample batch, retry the failed record, then replay the batch to check for duplicate writes.</p>
@@ -20,7 +20,7 @@
 <p id="counts" role="status"></p>
 <div class="table-scroll"><table><thead><tr><th scope="col">Event</th><th scope="col">Decision</th><th scope="col">Reason</th></tr></thead><tbody id="log"></tbody></table></div>
 </section>
-<section class="panel" style="margin-top:20px"><h3>Execution order</h3><ol><li>Check the destination field against the enrichment allowlist. Block operational fields.</li><li>Check whether the event ID already succeeded. Skip completed events.</li><li>For a simulated temporary failure, retain the event in the pending queue.</li><li>On success, remove it from pending, record its ID, and increment the simulated write count.</li></ol><p><b>Expected trace:</b> EV-101 applies; EV-102 is blocked; EV-103 waits for retry. Retry applies EV-103. Replay then skips EV-101 and EV-103, while EV-102 remains blocked.</p><p><b>Salesforce implementation boundary:</b> Flow could use Decisions and a persistent event-log object. This demo has neither a live connection nor durable storage; production concurrency and lost acknowledgments need additional design.</p></section><h3>Controls this demonstrates</h3>
+<h3>Controls this demonstrates</h3>
 <p>Apply an allowlist for enrichment fields, use event IDs to avoid a second successful write, and keep failed events eligible for a retry. A production version would persist event IDs and audit records, use a durable queue, and apply CRM-side idempotency to handle a write that succeeds before acknowledgment.</p>
 <p>The replay tracks successful event IDs and retryable failures in memory for this session.</p>
 <a href="sync-review.js">View CRM replay source</a>

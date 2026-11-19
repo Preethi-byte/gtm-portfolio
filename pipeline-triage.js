@@ -41,18 +41,6 @@ function render() {
    ' before the next forecast meeting? '+actions+'</p>' : '<p>No flags under the current rules.</p>')+
   '<button id="review">'+(reviewed.has(deal) ? 'Undo review' : 'Mark reviewed')+'</button>';
 }
-function renderTrace() {
- const deal = selected;
- const checks = [
-  ['Close date', deal.close, 'CloseDate < reference date', daysSince(deal.close) > 0, 'Ask owner to confirm buyer timing'],
-  ['Recorded activity', deal.activity ?? 'Missing', 'Missing OR days since activity >= 21', !deal.activity || daysSince(deal.activity) >= 21, 'Ask owner to verify engagement'],
-  ['Deal value', deal.amount === null ? 'Missing' : currency.format(deal.amount), 'Amount is missing OR Amount = 0', !deal.amount, 'Ask owner to confirm value']
- ];
- document.querySelector('#rule-trace').innerHTML = '<h2>Execution trace: '+deal.name+'</h2><p>Reference date: 17 November 2026. Every rule is evaluated independently, so one deal can have multiple review reasons.</p><div style="overflow:auto"><table style="width:100%;min-width:650px;text-align:left;border-collapse:collapse"><thead><tr><th>Input</th><th>Actual value</th><th>Condition</th><th>Result</th><th>Next step</th></tr></thead><tbody>'+checks.map(([field,value,condition,flag,action])=>'<tr><td>'+field+'</td><td>'+value+'</td><td>'+condition.replace('<','&lt;')+'</td><td><b>'+(flag?'FLAG':'CLEAR')+'</b></td><td>'+(flag?action:'No review reason from this rule')+'</td></tr>').join('')+'</tbody></table></div><p><b>Aggregation:</b> '+deal.flags.length+' flags. Sort descending by flag count; retain source order for ties. This is a review queue, not a win-probability model.</p><p><b>Write behaviour:</b> Mark reviewed updates a session-only Set. This demo never updates Salesforce stage, amount, or close date.</p>';
-}
-const renderOriginal = render;
-render = function() { renderOriginal(); renderTrace(); };
-
 document.querySelector('#queue').addEventListener('click', event => {
  const button = event.target.closest('button[data-index]');
  if (button) {
