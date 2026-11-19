@@ -22,7 +22,7 @@ a:focus-visible,button:focus-visible{outline-color:#c7ef66}
 <header><p>PREETHI RAVICHANDRAN · GTM PORTFOLIO</p><h1>Pipeline Triage</h1><p>Find the open deals that need a decision before the forecast review.</p></header>
 <main>
 <p><a href="index.html" class="back">← Back to portfolio</a></p>
-<small>Interactive demo · Fictional CRM data</small>
+<small>Interactive demo · Sample CRM data</small>
 <div class="stats" id="stats"></div>
 <div class="layout">
 <section><h2>Opportunity queue</h2><p id="queue-description">Flagged deals appear first, ordered by number of signals.</p><div id="queue" aria-describedby="queue-description"></div></section>
@@ -30,7 +30,7 @@ a:focus-visible,button:focus-visible{outline-color:#c7ef66}
 </div>
 <section style="margin-top:24px"><h2>Build this review workflow in Salesforce</h2><p>Inspect the Flow elements, exact formulas, report filters, owner actions, and validation checklist.</p><p><a class="back" href="flow-guide.html">Open the Salesforce Flow build guide</a></p></section>
 <section style="margin-top:20px" id="rule-trace" aria-live="polite"></section>
-<section style="margin-top:20px"><h2>How this maps to Salesforce Flow</h2><p><b>Implementation plan — not deployed in this portfolio.</b> The browser trace above is executable JavaScript. The steps below describe a Flow version you could build.</p><ol><li><b>Schedule-Triggered Flow:</b> select open opportunities for daily evaluation.</li><li><b>Formula resources:</b> compute overdue close date, missing/stale activity, and missing/zero amount independently.</li><li><b>Assignment:</b> combine all applicable reasons. Do not use a single exclusive branch that stops after the first match.</li><li><b>Decision:</b> compare the calculated review state with stored review fields.</li><li><b>Update Records:</b> update review fields only when changed; clear obsolete reasons when records become healthy. Include a path for clearing reviews when opportunities close.</li><li><b>List view / report:</b> show flagged opportunities and reasons to the owner. Keep commercial field updates subject to existing permissions.</li></ol><p><b>Activity dependency:</b> confirm that the chosen Salesforce activity source covers the team’s capture tools before enabling that rule.</p><p><a class="back" href="system-design.html#verification">Inspect test evidence and design decisions</a></p></section>
+
 <footer><p><a class="back" href="pipeline-triage.js">View Pipeline Triage source</a></p><small>Rules flag an overdue close date, 21+ days without recorded activity or missing activity history, and missing or zero deal value. The demo uses a fixed reference date so the same records produce the same results. Drafts are generated from templates. Reviews stay in this browser session.</small></footer>
 </main>
 <script src="pipeline-triage.js"></script>
