@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Outreach Readiness | Preethi Ravichandran</title><link rel="stylesheet" href="portfolio.css"><script src="decisions.js" defer></script></head><body><header class="wrap nav"><a href="index.html" class="brand">Preethi Ravichandran</a><a href="index.html#lab">Back to work samples</a></header><main><section class="lab" id="lab">
+<div class="wrap">
+<div class="section-head"><div><p class="label">INTERACTIVE WORK SAMPLE</p><h2>Inspect the decision before the draft.</h2></div><p>Inspect a sample prospect batch against verification status, suppression, duplicates, ownership, and required data. Each decision exposes its reason; eligible records receive a template draft for review.</p></div>
+<div class="lab-grid">
+<section class="panel" aria-labelledby="queue-title">
+<div class="panel-head"><div><h3 id="queue-title">Outreach readiness</h3><p>Select a prospect to see the decision and its evidence.</p></div><button id="run" type="button">Run batch</button></div>
+<div id="batch" class="metrics" aria-live="polite"></div>
+<div class="table-scroll"><table><thead><tr><th scope="col">Prospect</th><th scope="col">Segment</th><th scope="col">Decision</th></tr></thead><tbody id="prospects"></tbody></table></div>
+<div id="explanation" class="explanation" aria-live="polite">Run the batch to inspect a decision.</div>
+<details class="method" open><summary>Execution order: which rule runs first?</summary><ol><li>Normalize email case and surrounding whitespace.</li><li>Collect suppressed addresses across the whole batch. Block every matching row, including earlier rows.</li><li>Hold missing emails or verification statuses other than valid.</li><li>Hold records missing LinkedIn, firmographics, or ownership.</li><li>Check whether an eligible row already reserved the normalized email. If so, mark duplicate.</li><li>Reserve the eligible address and prepare a template draft for human review.</li></ol><p>These rules execute in JavaScript. In a Salesforce Flow design, the same stages would use record queries, loops, Decisions, and Assignments. The reservation is currently batch-local; cross-run duplicate prevention would need stored state.</p></details><details class="method"><summary>How a prospect becomes draft-ready</summary><p>Each sample supplies simulated email verification, suppression, ownership, and field-completeness inputs. The code applies shared rules before reserving a contact for one eligible segment. Records that fail a check receive a reason. Ready records get a reviewable template draft. The browser runs the logic on sample data without external connections or email delivery.</p></details>
+<p><a href="decisions.js" class="source-link">View outreach and planning source</a></p>
+</section>
+<section class="panel math" aria-labelledby="math-title"><h3 id="math-title">Work back from the target</h3><p>Change the assumptions to see the required opportunity count.</p>
+<form id="calculator">
+<label>Quarterly new revenue target <span>USD</span><input id="target" type="number" min="1" max="1000000000000" step="1" value="300000" required></label>
+<label>Opportunity win rate <span>%</span><input id="win-rate" type="number" min="0.1" max="100" step="0.1" value="20" required></label>
+<label>Average deal size <span>USD</span><input id="deal-size" type="number" min="1" max="1000000000" step="1" value="75000" required></label>
+</form>
+<div class="math-result" id="math-result" aria-live="polite"></div>
+<p class="math-note">A model for planning. In a real funnel I’d measure where conversion drops, then test one intervention at that stage.</p>
+</section>
+</div></div>
+</section>
+
+
+</main></body></html>
