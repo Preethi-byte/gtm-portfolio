@@ -1,0 +1,36 @@
+/* Demo-algorithm checks. Run with Node: node verify.cjs */
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const {sample, evaluateBatch, planPipeline} = require('./decisions.js');
+const {createReplay} = require('./sync-review.js');
+let passed = 0;
+const check = (name, fn) => {fn(); passed++; console.log('PASS', name);};
+check('Sample batch decisions', () => assert.deepEqual(evaluateBatch(sample).map(x=>x.status), ['Draft ready','Draft ready','Duplicate','Needs review','Needs review','Blocked']));
+const valid = {name:'Test User',company:'Example',email:'test@example.invalid',verification:'valid',linkedin:true,firmographics:true,owner:true};
+check('Suppression applies to an earlier eligible row', () => assert.deepEqual(evaluateBatch([valid,{...valid,suppressed:true}]).map(x=>x.status), ['Blocked','Blocked']));
+check('Email whitespace and case normalize', () => assert.equal(evaluateBatch([valid,{...valid,email:' TEST@EXAMPLE.INVALID '}])[1].status,'Duplicate'));
+check('Missing owner prevents drafting', () => assert.equal(evaluateBatch([{...valid,owner:false}])[0].status,'Needs review'));
+check('Missing email prevents drafting', () => assert.equal(evaluateBatch([{...valid,email:''}])[0].status,'Needs review'));
+check('Ineligible row does not reserve the address', () => assert.equal(evaluateBatch([{...valid,owner:false},valid])[1].status,'Draft ready'));
+check('Missing enrichment prevents drafting', () => assert.equal(evaluateBatch([{...valid,firmographics:false}])[0].status,'Needs review'));
+check('Inconclusive verification prevents drafting', () => assert.equal(evaluateBatch([{...valid,verification:'risky'}])[0].status,'Needs review'));
+check('Pipeline planning example', () => assert.deepEqual(planPipeline(300000,20,75000), {opportunities:20,pipeline:1500000,expectedWins:4}));
+check('Planning rounds opportunities upward', () => assert.equal(planPipeline(300001,20,75000).opportunities,21));
+check('Initial replay allows, blocks and queues events', () => {const r=createReplay();assert.deepEqual(r.run().map(x=>x[1]),['Applied','Blocked','Retryable']);assert.deepEqual(r.stats(),{writes:1,pending:1});});
+check('Retry recovers one event', () => {const r=createReplay();r.run();assert.equal(r.retry()[0][1],'Applied');assert.deepEqual(r.stats(),{writes:2,pending:0});});
+check('Replay after recovery adds no writes', () => {const r=createReplay();r.run();r.retry();assert.deepEqual(r.run().map(x=>x[1]),['Skipped','Blocked','Skipped']);assert.equal(r.stats().writes,2);assert.deepEqual(r.retry(),[]);});
+// Evaluate the actual pipeline-rule source before its DOM wiring.
+const source=fs.readFileSync(__dirname+'/pipeline-triage.js','utf8');
+const ruleSource=source.slice(0,source.indexOf('const ranked'));
+const sandbox={};vm.createContext(sandbox);
+vm.runInContext(ruleSource+';this.getSignals=signals;',sandbox);
+const signals=sandbox.getSignals;
+const deal={close:'2026-11-17',activity:'2026-11-17',amount:100};
+check('Reference-day close is not overdue',()=>assert.equal(signals(deal).length,0));
+check('Prior-day close is overdue',()=>assert.equal(signals({...deal,close:'2026-11-16'})[0][0],'Overdue close date'));
+check('21-day activity boundary is flagged',()=>assert.equal(signals({...deal,activity:'2026-10-27'}).length,1));
+check('20-day activity is not stale',()=>assert.equal(signals({...deal,activity:'2026-10-28'}).length,0));
+check('Absent activity is distinguished',()=>assert.equal(signals({...deal,activity:null})[0][0],'No recorded activity'));
+check('Missing and zero values are distinguished',()=>{assert.equal(signals({...deal,amount:null})[0][0],'Deal value missing');assert.equal(signals({...deal,amount:0})[0][0],'Deal value is zero');});
+console.log(passed+' algorithm checks passed. No live-service or browser verification is implied.');

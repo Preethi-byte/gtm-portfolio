@@ -57,3 +57,4 @@ function wire(document) {
 
 if (typeof document !== 'undefined') wire(document);
 if (typeof module !== 'undefined') module.exports = { createReplay };
+

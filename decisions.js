@@ -81,3 +81,4 @@ function wireDemo(document) {
 
 if (typeof document !== 'undefined') wireDemo(document);
 if (typeof module !== 'undefined') module.exports = { sample, evaluateBatch, planPipeline };
+
