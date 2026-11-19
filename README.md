@@ -29,4 +29,3 @@ node verify.cjs
 
 The 19 checks cover sample decisions, suppression, deduplication, incomplete records, planning math, retry recovery, replay handling, and pipeline rule boundaries. They do not test live integrations.
 
-The portfolio interface and demo code were built with AI assistance and reviewed against scenarios from my Salesforce and RevOps experience.
